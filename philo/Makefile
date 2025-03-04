@@ -14,39 +14,39 @@ OBJ_PATH = obj/
 PARSING_PATH = parsing/
 UTIL_PATH = utils/
 SRC_PATH = src/
-SORT_PATH = sort/
+CORE_PATH = core/
 
-# SORT = index_handle.c bytes_handle.c radix.c minus.c
 SRC = main.c
-# UTIL = push_rotate.c
+UTIL = free_all.c utils.c
 PARSING = parsing.c ft_utils_node_remains.c ft_utils_node.c parsing2.c gen_utils.c ft_itoa.c
+CORE = core.c init.c routines.c starting.c
 
-# SORTS = $(addprefix $(SORT_PATH), $(SORT))  
+CORES = $(addprefix $(CORE_PATH), $(CORE))  
 SRCS = $(addprefix $(SRC_PATH), $(SRC))
 PARSINGS = $(addprefix $(PARSING_PATH), $(PARSING))
-# UTILS = $(addprefix $(UTIL_PATH), $(UTIL))
+UTILS = $(addprefix $(UTIL_PATH), $(UTIL))
 
 OBJ = $(PARSING:.c=.o)
-# OBJ_UTIL = $(UTIL:.c=.o)
+OBJ_UTIL = $(UTIL:.c=.o)
 OBJ_SRC = $(SRC:.c=.o)
-# OBJ_SORT = $(SORT:.c=.o)
+OBJ_CORE = $(CORE:.c=.o)
 
 OBJS = $(addprefix $(OBJ_PATH), $(OBJ))
-# OBJS_UTIL = $(addprefix $(OBJ_PATH), $(OBJ_UTIL))
+OBJS_UTIL = $(addprefix $(OBJ_PATH), $(OBJ_UTIL))
 OBJS_SRC = $(addprefix $(OBJ_PATH), $(OBJ_SRC))
-# OBJS_SORT = $(addprefix $(OBJ_PATH), $(OBJ_SORT))
+OBJS_CORE = $(addprefix $(OBJ_PATH), $(OBJ_CORE))
 
 all: $(NAME)
 	@echo ">>> $(BLUE)COMPILATION TERMINEE $(RESET)<<<"
 
-$(NAME): $(OBJS) $(OBJS_SRC)
-	@$(CC) $(CFLAGS) $(OBJS) $(OBJS_SRC) -o $@
+$(NAME): $(OBJS) $(OBJS_SRC) $(OBJS_CORE) $(OBJS_UTIL)
+	@$(CC) $(CFLAGS) $(OBJS) $(OBJS_SRC) $(OBJS_CORE) $(OBJS_UTIL) -o $@
 
 $(OBJ_PATH)%.o: $(PARSING_PATH)%.c
 	@mkdir -p $(OBJ_PATH)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-$(OBJ_PATH)%.o: $(SORT_PATH)%.c
+$(OBJ_PATH)%.o: $(CORE_PATH)%.c
 	@$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJ_PATH)%.o: $(UTIL_PATH)%.c

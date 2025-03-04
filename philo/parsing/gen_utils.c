@@ -6,7 +6,7 @@
 /*   By: cmorel <cmorel@42angouleme.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 12:19:20 by cmorel            #+#    #+#             */
-/*   Updated: 2025/03/01 12:45:48 by xray             ###   ########.fr       */
+/*   Updated: 2025/03/04 12:20:24 by xray             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../h_file/philo.h"
@@ -45,20 +45,6 @@ long long	ft_atoll(char *s, int *i, int *space)
 	return (nbr);
 }
 
-int	is_sorted(t_list *s)
-{
-	t_list	*curr;
-
-	curr = s;
-	while (curr->next)
-	{
-		if (curr->content > curr->next->content)
-			return (0);
-		curr = curr->next;
-	}
-	return (1);
-}
-
 int	is_negative(t_list *list)
 {
 	t_list	*curr;
@@ -67,7 +53,10 @@ int	is_negative(t_list *list)
 	while (curr)
 	{
 		if (curr->content < 0)
+		{
+			printf("here is my content : %d\n", curr->content);
 			return (0);
+		}
 		curr = curr->next;
 	}
 	return (1);

@@ -6,7 +6,7 @@
 /*   By: cmorel <cmorel@42angouleme.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 13:13:14 by cmorel            #+#    #+#             */
-/*   Updated: 2025/03/01 12:52:06 by xray             ###   ########.fr       */
+/*   Updated: 2025/03/04 12:21:29 by xray             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../h_file/philo.h"
@@ -61,26 +61,6 @@ int	addlist(char *s, t_list **l, int i, int space)
 	return (1);
 }
 
-int	check_doubles(t_list *l)
-{
-	t_list	*curr;
-	t_list	*f;
-
-	f = l;
-	while (f)
-	{
-		curr = f->next;
-		while (curr)
-		{
-			if (curr->content == f->content)
-				return (0);
-			curr = curr->next;
-		}
-		f = f->next;
-	}
-	return (1);
-}
-
 t_list	*parsing(int argc, char **t, t_list *l)
 {
 	int		i;
@@ -95,7 +75,7 @@ t_list	*parsing(int argc, char **t, t_list *l)
 			return (error(l));
 		i++;
 	}
-	if (!check_doubles(l) && !is_negative(l))
+	if (!is_negative(l))
 		return (error(l));
 	return (l);
 }
