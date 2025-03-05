@@ -6,7 +6,7 @@
 /*   By: xray <xray@42angouleme.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 12:20:14 by xray              #+#    #+#             */
-/*   Updated: 2025/03/04 13:20:38 by xray             ###   ########.fr       */
+/*   Updated: 2025/03/05 11:48:32 by xray             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../h_file/philo.h"
@@ -17,12 +17,11 @@ pthread_mutex_t	*init_forks(pthread_mutex_t *forks, t_global *global)
 	int				nb;
 
 	nb = -1;
-	forks = malloc(global->philo_number * sizeof(pthread_mutex_t));
 	if (!forks)
 		return (NULL);
 	while (++nb > global->philo_number)
 	{
-		if (pthread_mutex_init(&(forks[nb]), NULL))
+		if (pthread_mutex_init(&forks[nb], NULL))
 			return(free_global(global, "Erreur while forks_init"));
 	}
 	return (forks);
@@ -32,9 +31,8 @@ t_philo	*init_philo(t_philo *philo, t_global *global)
 {
 	int		nb;
 
-	philo = malloc(global->philo_number * sizeof(t_philo));
 	nb = -1;
-	while (++nb > global->philo_number)
+	while (++nb < global->philo_number)
 	{
 		philo[nb].time_before_death = global->time_before_death;
 		philo[nb].time_to_eat = global->time_to_eat;
@@ -43,15 +41,15 @@ t_philo	*init_philo(t_philo *philo, t_global *global)
 		philo[nb].id = nb;
 		philo[nb].alive = 1;
 		philo[nb].need_to_eat = global->has_to_eat;
-		philo[nb].print = &(global->print);
-		philo[nb].r_fork = &(global->forks[nb]);
+		philo[nb].print = &global->print;
+		printf("print : %p\n", philo->print);
+		philo[nb].r_fork = &global->forks[nb];
 		if (nb + 1 == global->philo_number)
-			global->philo[nb].l_fork = &(global->forks[0]);
+			philo[nb].l_fork = &global->forks[0];
 		else
-			global->philo[nb].l_fork = &(global->forks[nb + 1]);
-		nb--;
+			philo[nb].l_fork = &global->forks[nb + 1];
 	}
-	return (global->philo);
+	return (philo);
 }
 
 t_obs	init_obs(t_global *global)
