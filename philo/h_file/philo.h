@@ -6,7 +6,7 @@
 /*   By: xray <xray@42angouleme.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 12:22:02 by xray              #+#    #+#             */
-/*   Updated: 2025/03/04 13:18:36 by xray             ###   ########.fr       */
+/*   Updated: 2025/03/06 17:30:39 by cmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PHILO_H
@@ -30,12 +30,18 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
+typedef struct s_obs
+{
+	pthread_t th;
+}	t_obs;
+
 typedef struct	s_philo
 {
 	int				id;
-	int				last_meal;
 	int				need_to_eat;
 	int				alive;
+	size_t			last_meal;
+	size_t			time_begin;
 	size_t			time_before_death;
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
@@ -45,24 +51,20 @@ typedef struct	s_philo
 	pthread_mutex_t	*print;
 }					t_philo;
 
-typedef	struct	s_obs
+typedef	struct	s_data
 {
-	int			**alive;
-	pthread_t	th;
-}		t_obs;
-typedef	struct	s_global
-{
-	size_t			time_before_death;
-	size_t			time_to_eat;
-	size_t			time_to_sleep;
 	int				has_to_eat;
 	int				philo_number;
 	int				birth;
-	t_obs			obs;
+	size_t			time_begin;
+	size_t			time_before_death;
+	size_t			time_to_eat;
+	size_t			time_to_sleep;
+	t_obs			*obs;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print;
 	t_philo			*philo;
-}					t_global;
+}					t_data;
 
 // parsing 
 
@@ -103,15 +105,15 @@ int			ft_recur(int n, char *ptr, int l);
 
 int			is_negative(t_list *list);
 
-void		*free_global(t_global *global, char *message);
+void		*free_data(t_data *data, char *message);
 
-size_t		get_current_time();
+size_t		get_current_time(size_t t);
 
-void		print_message(t_global *global, char *message, int nb);
+void		print_message(t_data *data, char *message, int nb);
 
-void		obs_routine(void	*glob);
+void		obs_routine(t_data *data);
 
-void		lauch_them_all(t_global	*global);
+void		lauch_them_all(t_data	*data);
 
 void		*philo_routine(void	*glob);
 
@@ -119,11 +121,13 @@ void		print_action(t_philo *philo, char *message);
 
 void		core(int *time_list);
 
-t_obs		init_obs(t_global *global);
+t_philo	*init_philo(t_philo *philo, t_data *data);
 
-t_philo	*init_philo(t_philo *philo, t_global *global);
+pthread_mutex_t	*init_forks(pthread_mutex_t *forks, t_data *data);
 
-pthread_mutex_t	*init_forks(pthread_mutex_t *forks, t_global *global);
+t_data	*init_data(t_data *data);
 
-t_global	*init_global(t_global *global, pthread_mutex_t *fork, t_philo *philo);
+void	ft_usleep(t_philo *philo, size_t time);
+
+
 #endif

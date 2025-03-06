@@ -6,7 +6,7 @@
 /*   By: xray <xray@42angouleme.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 12:31:09 by xray              #+#    #+#             */
-/*   Updated: 2025/03/04 12:27:38 by xray             ###   ########.fr       */
+/*   Updated: 2025/03/06 19:06:01 by cmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int main(int argc, char **argv)
 	if (argc != 5 && argc != 6)
 		return (1);
 	list = parsing(argc, argv, list);
+	if (!list)
+		return (1);
 	time_list = malloc(5 * sizeof(int));
 	time_list[0] = list->content;
 	time_list[1] = list->next->content;
@@ -32,4 +34,5 @@ int main(int argc, char **argv)
 		time_list[4] = -1;
 	ft_lstclear(&list);
 	core(time_list);
+	free(time_list);
 }

@@ -6,7 +6,7 @@
 /*   By: xray <xray@42angouleme.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 10:31:27 by xray              #+#    #+#             */
-/*   Updated: 2025/03/05 11:49:26 by xray             ###   ########.fr       */
+/*   Updated: 2025/03/06 18:59:29 by cmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,53 @@
 #include <pthread.h>
 #include <unistd.h>
 
-void	obs_routine(void	*glob)
+void	all_eaten(t_data *data)
 {
-	t_global	*global;
-	int			i;
-	int			eaten;
+	pthread_mutex_lock(&data->print);
+	printf("All philosophers have eaten enough\n");
+	pthread_mutex_unlock(&data->print);
+}
 
-	global = (t_global *)glob;
+void	obs_routine(t_data *data)
+{
+	int		i;
+	int		count;
+
 	while (1)
 	{
 		i = -1;
-		eaten = 0;
-		while (++i)
+		count = 0;
+		while (++i < data->philo_number)
 		{
-			if (global->philo[i].last_meal - get_current_time() >= global->time_before_death)
+			if (get_current_time(0) - data->philo[i].last_meal >= data->time_before_death || !data->philo[i].alive)
 			{
-				global->philo[i].alive = 0;
-				print_message(global, "died", i);
+				print_message(data, "died (boo le nul)", i);
 				return ;
 			}
-			if (global->philo[i].need_to_eat <= 0)
-				eaten++;
+			if (data->philo[i].need_to_eat == 0)
+				count++;
 		}
-		if (eaten == global->philo_number)
+		if (count == data->philo_number)
+		{
+			all_eaten(data);
 			return ;
+		}
+		usleep(500);
 	}
+}
+
+void	take_fork(t_philo *philo)
+{
+	if (philo->id % 2)
+		pthread_mutex_lock(philo->l_fork);
+	else if (!(philo->id % 2))
+		pthread_mutex_lock(philo->r_fork);
+	print_action(philo, "has taken a fork");
+	if (philo->id % 2)
+		pthread_mutex_lock(philo->r_fork);
+	else if (!(philo->id % 2))
+		pthread_mutex_lock(philo->l_fork);
+	print_action(philo, "has taken a fork");
 }
 
 void	*philo_routine(void	*ph)
@@ -46,23 +68,19 @@ void	*philo_routine(void	*ph)
 	t_philo	*philo;
 
 	philo = (t_philo *)ph;
-	while (1)
+	while (philo->alive)
 	{
-		pthread_mutex_lock(philo->r_fork);
-		print_action(philo, "has taken a fork");
-		pthread_mutex_lock(philo->l_fork);
-		print_action(philo, "has taken a fork");
+		take_fork(philo);
 		print_action(philo, "is eating");
-		philo->need_to_eat--;
-		philo->last_meal = get_current_time();
-		usleep(philo->time_to_eat);
+		if (philo->need_to_eat != 0 && philo->need_to_eat != -1)
+			philo->need_to_eat--;
+		philo->last_meal = get_current_time(0);
+		ft_usleep(philo, philo->time_to_eat);
 		pthread_mutex_unlock(philo->r_fork);
 		pthread_mutex_unlock(philo->l_fork);
 		print_action(philo, "is sleeping");
-		usleep(philo->time_to_sleep);
+		ft_usleep(philo, philo->time_to_sleep);
 		print_action(philo, "is thinking");
 	}
 	return (NULL);
 }
-
-

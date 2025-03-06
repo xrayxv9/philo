@@ -6,7 +6,7 @@
 /*   By: cmorel <cmorel@42angouleme.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 12:19:20 by cmorel            #+#    #+#             */
-/*   Updated: 2025/03/04 12:20:24 by xray             ###   ########.fr       */
+/*   Updated: 2025/03/06 19:06:04 by cmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../h_file/philo.h"
@@ -20,7 +20,8 @@ int	ft_strlen_space(char *s)
 	i = 0;
 	while (s[j] == '0')
 		j++;
-	while (s[j + i] && (s[j + i] >= '0' && s[j + i] <= '9'))
+	while ((s[j + i] && (s[j + i] >= '0' && s[j + i] <= '9')) ||
+		s[i + j] == '-')
 		i++;
 	return (i);
 }
@@ -53,10 +54,7 @@ int	is_negative(t_list *list)
 	while (curr)
 	{
 		if (curr->content < 0)
-		{
-			printf("here is my content : %d\n", curr->content);
 			return (0);
-		}
 		curr = curr->next;
 	}
 	return (1);
