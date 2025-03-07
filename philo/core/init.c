@@ -6,7 +6,7 @@
 /*   By: xray <xray@42angouleme.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 12:20:14 by xray              #+#    #+#             */
-/*   Updated: 2025/03/07 09:19:13 by cmorel           ###   ########.fr       */
+/*   Updated: 2025/03/07 10:57:44 by cmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../h_file/philo.h"
@@ -35,8 +35,6 @@ t_philo	*init_philo(t_philo *philo, t_data *data)
 	int		nb;
 
 	philo = malloc(data->philo_number * sizeof(t_philo));
-	if (!philo)
-		return (NULL);
 	nb = -1;
 	while (++nb < data->philo_number)
 	{
@@ -49,6 +47,9 @@ t_philo	*init_philo(t_philo *philo, t_data *data)
 		philo[nb].need_to_eat = data->has_to_eat;
 		philo[nb].time_begin = data->time_begin;
 		philo[nb].print = &data->print;
+		philo[nb].alive_mutex = &data->alive_mutex;
+		philo[nb].last_meal_mutex = &data->last_meal_mutex;
+		philo[nb].need_to_eat_mutex = &data->need_to_eat_mutex;
 		philo[nb].r_fork = &data->forks[nb];
 		if (nb + 1 == data->philo_number)
 			philo[nb].l_fork = &data->forks[0];

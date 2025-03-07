@@ -6,7 +6,7 @@
 /*   By: xray <xray@42angouleme.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:36:20 by xray              #+#    #+#             */
-/*   Updated: 2025/03/07 09:35:34 by cmorel           ###   ########.fr       */
+/*   Updated: 2025/03/07 10:51:58 by cmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../h_file/philo.h"
@@ -30,6 +30,9 @@ void	core(const int *time_list)
 	data.forks = &forks;
 	data.birth = get_current_time(0);
 	pthread_mutex_init(&(data.print), NULL);
+	pthread_mutex_init(&(data.alive_mutex), NULL);
+	pthread_mutex_init(&(data.need_to_eat_mutex), NULL);
+	pthread_mutex_init(&(data.last_meal_mutex), NULL);
 	data.forks = init_forks(&forks, &data);
 	data.philo = init_philo(&philo, &data);
 	data.birth = get_current_time(0);

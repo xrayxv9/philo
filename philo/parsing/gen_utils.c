@@ -6,7 +6,7 @@
 /*   By: cmorel <cmorel@42angouleme.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 12:19:20 by cmorel            #+#    #+#             */
-/*   Updated: 2025/03/07 09:08:46 by cmorel           ###   ########.fr       */
+/*   Updated: 2025/03/07 10:19:48 by cmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../h_file/philo.h"
@@ -53,7 +53,7 @@ int	is_negative(t_list *list)
 	curr = list;
 	while (curr)
 	{
-		if (curr->content < 0)
+		if (curr->content <= 0)
 			return (0);
 		curr = curr->next;
 	}

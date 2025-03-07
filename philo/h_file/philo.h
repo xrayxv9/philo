@@ -6,7 +6,7 @@
 /*   By: xray <xray@42angouleme.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 12:22:02 by xray              #+#    #+#             */
-/*   Updated: 2025/03/07 09:53:37 by cmorel           ###   ########.fr       */
+/*   Updated: 2025/03/07 10:51:45 by cmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef PHILO_H
@@ -46,6 +46,9 @@ typedef struct s_philo
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
 	pthread_t		th;
+	pthread_mutex_t	*alive_mutex;
+	pthread_mutex_t	*last_meal_mutex;
+	pthread_mutex_t	*need_to_eat_mutex;
 	pthread_mutex_t	*l_fork;
 	pthread_mutex_t	*r_fork;
 	pthread_mutex_t	*print;
@@ -61,8 +64,11 @@ typedef struct s_data
 	size_t			time_to_eat;
 	size_t			time_to_sleep;
 	t_obs			*obs;
-	pthread_mutex_t	*forks;
+	pthread_mutex_t	alive_mutex;
+	pthread_mutex_t	need_to_eat_mutex;
 	pthread_mutex_t	print;
+	pthread_mutex_t	last_meal_mutex;
+	pthread_mutex_t	*forks;
 	t_philo			*philo;
 }					t_data;
 
