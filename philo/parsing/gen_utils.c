@@ -6,7 +6,7 @@
 /*   By: cmorel <cmorel@42angouleme.fr>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 12:19:20 by cmorel            #+#    #+#             */
-/*   Updated: 2025/03/06 19:06:04 by cmorel           ###   ########.fr       */
+/*   Updated: 2025/03/07 09:08:46 by cmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../h_file/philo.h"
@@ -20,8 +20,8 @@ int	ft_strlen_space(char *s)
 	i = 0;
 	while (s[j] == '0')
 		j++;
-	while ((s[j + i] && (s[j + i] >= '0' && s[j + i] <= '9')) ||
-		s[i + j] == '-')
+	while ((s[j + i] && (s[j + i] >= '0' && s[j + i] <= '9'))
+		|| s[i + j] == '-')
 		i++;
 	return (i);
 }

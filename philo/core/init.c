@@ -6,7 +6,7 @@
 /*   By: xray <xray@42angouleme.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 12:20:14 by xray              #+#    #+#             */
-/*   Updated: 2025/03/06 17:44:47 by cmorel           ###   ########.fr       */
+/*   Updated: 2025/03/07 09:19:13 by cmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../h_file/philo.h"
@@ -16,13 +16,16 @@ pthread_mutex_t	*init_forks(pthread_mutex_t *forks, t_data *data)
 {
 	int				nb;
 
+	forks = malloc(data->philo_number * sizeof(pthread_mutex_t));
+	if (!forks)
+		return (NULL);
 	nb = -1;
 	if (!forks)
 		return (NULL);
 	while (++nb < data->philo_number)
 	{
 		if (pthread_mutex_init(&forks[nb], NULL))
-			return(free_data(data, "Erreur while forks_init"));
+			return (free_data(data, "Erreur while forks_init"));
 	}
 	return (forks);
 }
@@ -31,6 +34,9 @@ t_philo	*init_philo(t_philo *philo, t_data *data)
 {
 	int		nb;
 
+	philo = malloc(data->philo_number * sizeof(t_philo));
+	if (!philo)
+		return (NULL);
 	nb = -1;
 	while (++nb < data->philo_number)
 	{
@@ -50,10 +56,4 @@ t_philo	*init_philo(t_philo *philo, t_data *data)
 			philo[nb].l_fork = &data->forks[nb + 1];
 	}
 	return (philo);
-}
-
-t_data	*init_data(t_data *data)
-{
-	data->birth = get_current_time(0);
-	return (data);
 }

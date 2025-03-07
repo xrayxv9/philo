@@ -6,13 +6,13 @@
 /*   By: xray <xray@42angouleme.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 12:31:09 by xray              #+#    #+#             */
-/*   Updated: 2025/03/06 19:06:01 by cmorel           ###   ########.fr       */
+/*   Updated: 2025/03/07 09:30:06 by cmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../h_file/philo.h"
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_list	*list;
 	int		*time_list;

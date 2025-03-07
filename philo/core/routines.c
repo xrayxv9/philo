@@ -6,7 +6,7 @@
 /*   By: xray <xray@42angouleme.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 10:31:27 by xray              #+#    #+#             */
-/*   Updated: 2025/03/06 18:59:29 by cmorel           ###   ########.fr       */
+/*   Updated: 2025/03/07 10:01:17 by cmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,20 @@
 #include <pthread.h>
 #include <unistd.h>
 
-void	all_eaten(t_data *data)
+void	*all_eaten(t_data *data)
 {
+	int	i;
+
+	i = -1;
+	while (++i < data->philo_number)
+		data->philo[i].alive = 0;
 	pthread_mutex_lock(&data->print);
 	printf("All philosophers have eaten enough\n");
 	pthread_mutex_unlock(&data->print);
+	return (NULL);
 }
 
-void	obs_routine(t_data *data)
+void	*obs_routine(t_data *data)
 {
 	int		i;
 	int		count;
@@ -32,19 +38,14 @@ void	obs_routine(t_data *data)
 		count = 0;
 		while (++i < data->philo_number)
 		{
-			if (get_current_time(0) - data->philo[i].last_meal >= data->time_before_death || !data->philo[i].alive)
-			{
-				print_message(data, "died (boo le nul)", i);
-				return ;
-			}
+			if ((get_current_time(0) - data->philo[i].last_meal
+					>= data->time_before_death) || !data->philo[i].alive)
+				return (kill_all(data, i));
 			if (data->philo[i].need_to_eat == 0)
 				count++;
 		}
 		if (count == data->philo_number)
-		{
-			all_eaten(data);
-			return ;
-		}
+			return (all_eaten(data));
 		usleep(500);
 	}
 }
