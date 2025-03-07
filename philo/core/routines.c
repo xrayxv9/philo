@@ -6,7 +6,7 @@
 /*   By: xray <xray@42angouleme.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 10:31:27 by xray              #+#    #+#             */
-/*   Updated: 2025/03/07 11:49:08 by cmorel           ###   ########.fr       */
+/*   Updated: 2025/03/07 13:49:44 by cmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,10 @@ void	*all_eaten(t_data *data)
 	int	i;
 
 	i = -1;
+	pthread_mutex_lock(&data->alive_mutex);
 	while (++i < data->philo_number)
 		data->philo[i].alive = 0;
+	pthread_mutex_lock(&data->alive_mutex);
 	pthread_mutex_lock(&data->print);
 	printf("All philosophers have eaten enough\n");
 	pthread_mutex_unlock(&data->print);
@@ -45,8 +47,10 @@ void	*obs_routine(t_data *data)
 				return (kill_all(data, i));
 			pthread_mutex_unlock(&data->last_meal_mutex);
 			pthread_mutex_unlock(&data->alive_mutex);
+			pthread_mutex_lock(&data->need_to_eat_mutex);
 			if (data->philo[i].need_to_eat == 0)
 				count++;
+			pthread_mutex_unlock(&data->need_to_eat_mutex);
 		}
 		if (count == data->philo_number)
 			return (all_eaten(data));
