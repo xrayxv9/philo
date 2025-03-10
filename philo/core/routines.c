@@ -6,7 +6,7 @@
 /*   By: xray <xray@42angouleme.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 10:31:27 by xray              #+#    #+#             */
-/*   Updated: 2025/03/07 13:49:44 by cmorel           ###   ########.fr       */
+/*   Updated: 2025/03/10 15:59:04 by cmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	*all_eaten(t_data *data)
 	pthread_mutex_lock(&data->alive_mutex);
 	while (++i < data->philo_number)
 		data->philo[i].alive = 0;
-	pthread_mutex_lock(&data->alive_mutex);
+	pthread_mutex_unlock(&data->alive_mutex);
 	pthread_mutex_lock(&data->print);
 	printf("All philosophers have eaten enough\n");
 	pthread_mutex_unlock(&data->print);
