@@ -6,7 +6,7 @@
 /*   By: xray <xray@42angouleme.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 12:20:14 by xray              #+#    #+#             */
-/*   Updated: 2025/03/07 10:57:44 by cmorel           ###   ########.fr       */
+/*   Updated: 2025/03/13 10:30:45 by cmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../h_file/philo.h"
@@ -42,7 +42,7 @@ t_philo	*init_philo(t_philo *philo, t_data *data)
 		philo[nb].time_to_eat = data->time_to_eat;
 		philo[nb].time_to_sleep = data->time_to_sleep;
 		philo[nb].last_meal = -1;
-		philo[nb].id = nb;
+		philo[nb].id = nb + 1;
 		philo[nb].alive = 1;
 		philo[nb].need_to_eat = data->has_to_eat;
 		philo[nb].time_begin = data->time_begin;

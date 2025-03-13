@@ -6,7 +6,7 @@
 /*   By: xray <xray@42angouleme.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 10:31:27 by xray              #+#    #+#             */
-/*   Updated: 2025/03/10 15:59:04 by cmorel           ###   ########.fr       */
+/*   Updated: 2025/03/13 10:42:46 by cmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,24 @@ void	*obs_routine(t_data *data)
 
 void	eat(t_philo *philo)
 {
-	if (philo->id % 2)
+	int	id;
+
+	id = philo->id % 2;
+	if (id)
+	{
 		pthread_mutex_lock(philo->l_fork);
-	else if (!(philo->id % 2))
+		print_action(philo, "has taken a fork");
 		pthread_mutex_lock(philo->r_fork);
-	print_action(philo, "has taken a fork");
-	if (philo->id % 2)
+		print_action(philo, "has taken a fork");
+	}
+	else
+	{
+		usleep(100);
 		pthread_mutex_lock(philo->r_fork);
-	else if (!(philo->id % 2))
+		print_action(philo, "has taken a fork");
 		pthread_mutex_lock(philo->l_fork);
-	print_action(philo, "has taken a fork");
+		print_action(philo, "has taken a fork");
+	}
 	print_action(philo, "is eating");
 	pthread_mutex_lock(philo->last_meal_mutex);
 	philo->last_meal = get_current_time(0);

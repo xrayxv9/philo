@@ -6,7 +6,7 @@
 /*   By: xray <xray@42angouleme.fr>                 +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:30:17 by xray              #+#    #+#             */
-/*   Updated: 2025/03/07 11:34:21 by cmorel           ###   ########.fr       */
+/*   Updated: 2025/03/13 10:30:11 by cmorel           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "../h_file/philo.h"
@@ -25,7 +25,7 @@ void	*print_message(t_data *data, char *message, int nb)
 {
 	pthread_mutex_lock(&data->print);
 	printf("%lu philosopher %d %s\n", get_current_time(data->time_begin),
-		nb + 1, message);
+		nb, message);
 	pthread_mutex_unlock(&(data->print));
 	return (NULL);
 }
@@ -37,7 +37,7 @@ void	print_action(t_philo *philo, char *message)
 	{
 		pthread_mutex_lock(philo->print);
 		printf("%lu philosopher %d %s\n", get_current_time(philo->time_begin),
-			philo->id + 1, message);
+			philo->id, message);
 		pthread_mutex_unlock(philo->print);
 	}
 	pthread_mutex_unlock(philo->alive_mutex);
